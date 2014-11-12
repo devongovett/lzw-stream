@@ -75,7 +75,7 @@ describe('lzw stream', function() {
         }));
     });
     
-    it('should support non-default minCodeSize', function(done) {
+    it('should support non-default dataBits', function(done) {
       fs.createReadStream(__dirname + '/big.txt')
         .pipe(new LZWEncoder(7))
         .pipe(new LZWDecoder(7))
