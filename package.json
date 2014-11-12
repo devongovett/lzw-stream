@@ -1,0 +1,28 @@
+{
+  "name": "lzw-stream",
+  "version": "1.0.0",
+  "description": "Streaming LZW decoder and encoder",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/devongovett/lzw-stream.git"
+  },
+  "keywords": [
+    "compression",
+    "lzw",
+    "stream"
+  ],
+  "author": "Devon Govett <devongovett@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devongovett/lzw-stream/issues"
+  },
+  "homepage": "https://github.com/devongovett/lzw-stream",
+  "devDependencies": {
+    "concat-stream": "^1.4.6",
+    "mocha": "^2.0.1"
+  }
+}
