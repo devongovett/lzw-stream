@@ -38,7 +38,7 @@ LZWDecoder.prototype._transform = function(block, encoding, done) {
     this.bits += 8;
   
     while (this.bits >= this.codeSize) {
-      // read a code from the this.buffer
+      // read a code from the buffer
       var code = this.data & this.codeMask;
       this.data >>= this.codeSize;
       this.bits -= this.codeSize;
@@ -75,7 +75,7 @@ LZWDecoder.prototype._transform = function(block, encoding, done) {
         return this.emit('error', new Error('Invalid LZW code'));
       }
 
-      // Fill output this.buffer by working backward through the prefix list
+      // Fill output buffer by working backward through the prefix list
       while (code >= this.clearCode) {
         this.buffer[--this.pos] = this.suffix[code];
         code = this.prefix[code];
