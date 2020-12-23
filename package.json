@@ -23,6 +23,6 @@
   "homepage": "https://github.com/devongovett/lzw-stream",
   "devDependencies": {
     "concat-stream": "^1.4.6",
-    "mocha": "^2.0.1"
+    "mocha": "^8.2.1"
   }
 }
