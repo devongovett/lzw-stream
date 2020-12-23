@@ -54,8 +54,8 @@ describe('lzw stream', function() {
       s.pipe(concat(function(buf) {
         var d = new LZWDecoder();
         
-        d.pipe(concat(function(res) {
-          assert.deepEqual(res, file)
+        d.pipe(concat(function(buf) {
+          assert(Buffer.compare(buf, file) === 0)
           done();
         }));
         
@@ -70,7 +70,7 @@ describe('lzw stream', function() {
         .pipe(new LZWEncoder)
         .pipe(new LZWDecoder)
         .pipe(concat(function(buf) {
-          assert.deepEqual(buf, file)
+          assert(Buffer.compare(buf, file) === 0)
           done();
         }));
     });
@@ -80,7 +80,7 @@ describe('lzw stream', function() {
         .pipe(new LZWEncoder(7))
         .pipe(new LZWDecoder(7))
         .pipe(concat(function(buf) {
-          assert.deepEqual(buf, file)
+          assert(Buffer.compare(buf, file) === 0)
           done();
         }));
     });
