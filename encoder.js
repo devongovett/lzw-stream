@@ -20,7 +20,7 @@ function LZWEncoder(dataBits) {
   this.codeTable = {};
   
   this.cur = 0;
-  this.buf = new Buffer(255);
+  this.buf = Buffer.alloc(255);
   this.pos = 0;
 }
 
@@ -96,7 +96,7 @@ LZWEncoder.prototype.outputBuffer = function() {
   if (this.pos > 0)
     this.push(this.buf.slice(0, this.pos));
     
-  this.buf = new Buffer(255);
+  this.buf = Buffer.alloc(255);
   this.pos = 0;
 };
 
