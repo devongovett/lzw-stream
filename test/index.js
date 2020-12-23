@@ -84,5 +84,16 @@ describe('lzw stream', function() {
           done();
         }));
     });
+
+    it('should support long repeating patterns', function(done) {
+      fs.createReadStream(__dirname + '/test.bmp')
+        .pipe(new LZWEncoder())
+        .pipe(new LZWDecoder())
+        .pipe(concat(function(buf) {
+          assert(Buffer.compare(buf, file) === 0)
+          done();
+        }));
+    });
+
   });
 });
