@@ -17,10 +17,10 @@ function LZWEncoder(dataBits) {
   
   this.first = true;
   this.curCode = 0;
-  this.codeTable = {};
+  this.codeTable = new Map();
   
   this.cur = 0;
-  this.buf = new Buffer(255);
+  this.buf = Buffer.alloc(255);
   this.pos = 0;
 }
 
@@ -38,8 +38,8 @@ LZWEncoder.prototype._transform = function(data, encoding, done) {
     var k = data[i] & this.codeMask;
     var curKey = this.curCode << 8 | k;
         
-    if (curKey in this.codeTable) {
-      this.curCode = this.codeTable[curKey];
+    if (this.codeTable.has(curKey)) {
+      this.curCode = this.codeTable.get(curKey);
     } else {
       this.emitCode(this.curCode);
       
@@ -48,7 +48,7 @@ LZWEncoder.prototype._transform = function(data, encoding, done) {
         this.emitCode(this.clearCode);
         this.nextCode = this.eoiCode + 1;
         this.codeSize = this.dataBits + 1;
-        this.codeTable = {};
+        this.codeTable = new Map();
       } else {
         // increase code size if we used up all the 
         // available bits at the current size
@@ -56,7 +56,7 @@ LZWEncoder.prototype._transform = function(data, encoding, done) {
           this.codeSize++;
         
         // add a new code to the dictionary
-        this.codeTable[curKey] = this.nextCode++;
+        this.codeTable.set(curKey,this.nextCode++);
       }
       
       this.curCode = k;
@@ -96,7 +96,7 @@ LZWEncoder.prototype.outputBuffer = function() {
   if (this.pos > 0)
     this.push(this.buf.slice(0, this.pos));
     
-  this.buf = new Buffer(255);
+  this.buf = Buffer.alloc(255);
   this.pos = 0;
 };
 

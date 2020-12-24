@@ -7,7 +7,7 @@ var fs = require('fs');
 describe('lzw stream', function() {
   var file = fs.readFileSync(__dirname + '/big.txt');
     
-  describe('encoder', function() {
+  describe.skip('encoder', function() {
     it('should encode a buffer', function(done) {
       var s = new LZWEncoder();
       
@@ -54,8 +54,8 @@ describe('lzw stream', function() {
       s.pipe(concat(function(buf) {
         var d = new LZWDecoder();
         
-        d.pipe(concat(function(res) {
-          assert.deepEqual(res, file)
+        d.pipe(concat(function(buf) {
+          assert(Buffer.compare(buf, file) === 0)
           done();
         }));
         
@@ -70,7 +70,7 @@ describe('lzw stream', function() {
         .pipe(new LZWEncoder)
         .pipe(new LZWDecoder)
         .pipe(concat(function(buf) {
-          assert.deepEqual(buf, file)
+          assert(Buffer.compare(buf, file) === 0)
           done();
         }));
     });
@@ -80,9 +80,22 @@ describe('lzw stream', function() {
         .pipe(new LZWEncoder(7))
         .pipe(new LZWDecoder(7))
         .pipe(concat(function(buf) {
-          assert.deepEqual(buf, file)
+          assert(Buffer.compare(buf, file) === 0)
           done();
         }));
     });
+
+    it.only('should support long repeating patterns', function(done) {
+      const source = Buffer.alloc(Math.pow(2,20))
+      const e = new LZWEncoder()
+      e.pipe(new LZWDecoder())
+        .pipe(concat(function(buf) {
+          assert(Buffer.compare(buf, source) === 0)
+          done();
+        }));
+      e.write(source)
+      e.end();
+    });
+
   });
 });

@@ -25,7 +25,7 @@ function LZWDecoder(dataBits) {
   
   // allocate output buffer
   this.bufferSize = 1024;
-  this.buffer = new Buffer(this.bufferSize + MAX_DICT);
+  this.buffer = Buffer.alloc(this.bufferSize + MAX_DICT);
   this.pos = 0;
 }
 
@@ -101,8 +101,7 @@ LZWDecoder.prototype._transform = function(block, encoding, done) {
     
       // Output a buffer if we can
       if (this.pos >= this.bufferSize) {
-        this.push(new Buffer(this.buffer.slice(0, this.bufferSize)));
-          
+        this.push(Buffer.from(this.buffer.slice(0, this.bufferSize)));
         // Move the remaining bytes to the beginning of the buffer
         this.buffer.copy(this.buffer, 0, this.bufferSize);
         this.pos -= this.bufferSize;
